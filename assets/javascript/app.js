@@ -4,7 +4,7 @@ var config = {
     authDomain: "trainscheduler-c77fc.firebaseapp.com",
     databaseURL: "https://trainscheduler-c77fc.firebaseio.com",
     projectId: "trainscheduler-c77fc",
-    storageBucket: "",
+    storageBucket: "trainscheduler-c77fc.appspot.com",
     messagingSenderId: "126260373072"
 };
 firebase.initializeApp(config);
@@ -13,7 +13,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 var name = "";
-// setting up the button input
+// setting up the input button 
 $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
     var name = $("#train-name-input").val().trim();
