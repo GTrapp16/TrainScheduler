@@ -31,57 +31,73 @@ $("#add-train-btn").on("click", function (event) {
     });
 });
 // main function
-database.ref().on("child_added", function(childSnapshot){
-    var trainFrequncy=(childSnapshot).val().frequency;
-    //first time
-    var first=childSnapshot.val().first;
-    var firstTime=moment(first, "hh:mm");
-    console.log(firstTime);
-    //current time
-    var currentTime=moment();
-    console.log("Current Time: " + moment(currentTime).format("hh:mm"));
-    //time difference
-    var timeDifference=moment().diff(moment(firstTime), "minutes");
-    console.log("Time Difference: " + timeDifference); 
-    //time apart
-    var timeApart=timeDifference%trainFrequency;
-    console.log(timeApart);
-    //minutes until next train
-    var minutesLeft=trainFrequency-timeApart;
-    console.log("Minutes Until Train: " + minutesLeft, "minutes");
-    //next train
-    var nextTrain=moment().add(minutesLeft, "minutes");
-    console.log("Arrival Time: "+ moment(nextTrain).format("hh:mm"));
+database.ref().on("child_added", function (childSnapshot) {
+        var trainFrequncy = (childSnapshot).val().frequency;
+        //first time
+        var first = childSnapshot.val().first;
+        var firstTime = moment(first, "hh:mm");
+        console.log(firstTime);
+        //current time
+        var currentTime = moment();
+        console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+        //time difference
+        var timeDifference = moment().diff(moment(firstTime), "minutes");
+        console.log("Time Difference: " + timeDifference);
+        //time apart
+        var timeApart = timeDifference % trainFrequency;
+        console.log(timeApart);
+        //minutes until next train
+        var minutesLeft = trainFrequency - timeApart;
+        console.log("Minutes Until Train: " + minutesLeft, "minutes");
+        //next train
+        var nextTrain = moment().add(minutesLeft, "minutes");
+        console.log("Arrival Time: " + moment(nextTrain).format("hh:mm"));
+var snapshot=childSnapshot.key
+        //appending items
+        $("#train-table").append("<tr><th>" + childSnapshot.val().name +
+            " </th><th> " + childSnapshot.val().destination +
+            " </th><th> " + childSnapshot.val().frequency +
+            " </th><th> " + moment(nextTrain).format("hh:mm") +
+            " </th><th> " + minutesLeft + "</th>" +
+            " </th><th> " + '<button type="button" class="btn btn-danger btn-sm delete"></button>' + "</th></tr>");
 
-    //appending items
-    $("#train-table").append("<tr><th>" + childSnapshot.val().name +
-    " </th><th> " + childSnapshot.val().destination +
-    " </th><th> " + childSnapshot.val().frequency +
-    " </th><th> " + moment(nextTrain).format("hh:mm") +
-    " </th><th> " + minutesLeft + " </th><tr>");
+
+            $(".delete").on("click", function () {
+
+                database.ref().child(snapshot).remove();
+          
+              });
+              $(".delete").on("click", function () {
+          
+                $(this).parent().prevAll().parent().remove();
+          
+              });
+    },
+
+
     //fix errors
-}, function(errorObject) {
-    console.log("Errors Fixed: "+ errorObject.code);
-});
+    function (errorObject) {
+        console.log("Errors Fixed: " + errorObject.code);
+    });
 
- var trainFrequency= 3;
- //the time
- var firstT="03:00";
- //first time
- var firstTime=moment(firstT, currentTime).format("hh:mm");
- console.log(firstT);
- //current time
- var currentTime=moment();
- console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+var trainFrequency = 12;
+//the time
+var firstT = "03:00";
+//first time
+var firstTime = moment(firstT, currentTime).format("hh:mm");
+console.log(firstT);
+//current time
+var currentTime = moment();
+console.log("Current Time: " + moment(currentTime).format("hh:mm"));
 //difference between times
-var timeDifference=moment().diff(moment(firstT), "minutes");
+var timeDifference = moment().diff(moment(firstT), "minutes");
 console.log("Difference in Time: " + timeDifference);
 //time remainder
-var timeApart=timeDifference%trainFrequency;
+var timeApart = timeDifference % trainFrequency;
 console.log(timeApart);
 //minutes until next train
-var minutesLeft=trainFrequency-timeApart;
-console.log("Minutes Until Train: "+minutesLeft);
+var minutesLeft = trainFrequency - timeApart;
+console.log("Minutes Until Train: " + minutesLeft);
 //arrival time
-var nextTrain=moment().add(minutesLeft, "minutes");
-console.log("Arrival Time: "+ moment(nextTrain).format("hh:mm"));
+var nextTrain = moment().add(minutesLeft, "minutes");
+console.log("Arrival Time: " + moment(nextTrain).format("hh:mm"));
